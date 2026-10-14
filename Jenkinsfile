@@ -13,18 +13,22 @@ pipeline {
                 sh "ls -ltr"
             }
         }
-        stage('Setup') {
-            steps {
-            sh "pip install -r requirements.txt"
-            
-            }
-        }
-        stage('Test') {
-            steps {
-                sh "pytest"
-                sh "whoami"
-            }
-        }
+       stage('Setup') {
+    steps {
+        sh '''
+            python3 -m venv venv
+            ./venv/bin/python -m pip install -r requirements.txt
+        '''
+    }
+}
+       stage('Test') {
+    steps {
+        sh '''
+            ./venv/bin/python -m pytest
+            whoami
+        '''
+    }
+}
         // stage('Login to docker hub') {
         //     steps {
         //         withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
