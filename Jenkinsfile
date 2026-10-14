@@ -15,19 +15,8 @@ pipeline {
         }
         stage('Setup') {
             steps {
-                // sh "pip install -r requirements.txt"
-                sh '''
-                   if ! command -v pip3>/dev/null 2>&1; then
-                       echo "pip not found. Installing..."
-                       sudo apt-get upadate
-                       sudo apt-get install -y python3-pip
-                      
-                   else
-                echo "pip3 is already installed."
-               
-            fi
-            pip3 install -r requirements.txt
-            '''
+            sh "pip install -r requirements.txt"
+            
             }
         }
         stage('Test') {
