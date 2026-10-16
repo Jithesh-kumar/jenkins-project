@@ -15,13 +15,14 @@ pipeline {
         }
        stage('Setup') {
     steps {
-        sh "pip install -r requirements.txt"
+         python3 -m venv .venv
+            .venv/bin/python -m pip install -r requirements.txt
     }
 }
         stage('Test') {
             steps {
-                sh "pytest"
-                sh "whoami"
+                 sh '.venv/bin/python -m pytest'
+        sh 'whoami'
             }
         }
         // stage('Login to docker hub') {
