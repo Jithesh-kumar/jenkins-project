@@ -13,20 +13,27 @@ pipeline {
                 sh "ls -ltr"
             }
         }
-       stage('Setup') {
+       
+stage('Setup') {
     steps {
         sh '''
-         python3 -m venv .venv
+            rm -rf .venv
+            python3.11 -m venv .venv
+            .venv/bin/python -m pip install --upgrade pip setuptools wheel
             .venv/bin/python -m pip install -r requirements.txt
-            '''
+        '''
     }
 }
-        stage('Test') {
-            steps {
-                 sh '.venv/bin/python -m pytest'
-        sh 'whoami'
-            }
-        }
+
+stage('Test') {
+    steps {
+        sh '''
+            .venv/bin/python --version
+            .venv/bin/python -m pytest
+        '''
+    }
+}
+
         // stage('Login to docker hub') {
         //     steps {
         //         withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
