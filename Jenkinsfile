@@ -10,7 +10,6 @@ pipeline {
                 sh 'ls -ltr'
             }
         }
-
         stage('Setup') {
             steps {
                 sh '''
