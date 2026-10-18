@@ -14,17 +14,49 @@ pipeline {
                 sh "ls -ltr"
             }
         }
+        
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/Jithesh-kumar/jenkins-project.git',
+                    branch: 'main'
+                sh 'ls -ltr'
+            }
+        }
+
         stage('Setup') {
             steps {
-                sh "pip install -r requirements.txt"
+                sh '''
+                    python3 --version
+                    python3 -m venv .venv
+                    .venv/bin/python -m pip install --upgrade pip
+                    .venv/bin/python -m pip install -r requirements.txt
+                '''
             }
         }
+
         stage('Test') {
             steps {
-                sh "pytest"
-                sh "whoami"
+                sh '''
+                    .venv/bin/python -m pytest
+                    whoami
+                '''
             }
         }
+        // stage('Setup') {
+        //     steps {
+        //         sh "pip install -r requirements.txt"
+        //     }
+        // }
+        // stage('Test') {
+        //     steps {
+        //         sh "pytest"
+        //         sh "whoami"
+        //     }
+        // }
         // stage('Login to docker hub') {
         //     steps {
         //         withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
