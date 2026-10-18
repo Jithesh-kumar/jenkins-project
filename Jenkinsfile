@@ -10,24 +10,22 @@ pipeline {
                 sh 'ls -ltr'
             }
         }
-        stage('Setup') {
-            steps {
-                sh '''
-                    python3 --version
-                    python3 -m venv .venv
-                    .venv/bin/python -m pip install --upgrade pip
-                    .venv/bin/python -m pip install -r requirements.txt
-                '''
-            }
-        }
+       stage('Setup') {
+    steps {
+        sh '''
+            python3.12 -m venv .venv
+            .venv/bin/python -m pip install -r requirements.txt
+        '''
+    }
+}
 
-        stage('Test') {
-            steps {
-                sh '''
-                    .venv/bin/python -m pytest
-                    whoami
-                '''
-            }
-        }
+stage('Test') {
+    steps {
+        sh '''
+            .venv/bin/python -m pytest
+            whoami
+        '''
+    }
+}
     }
 }
